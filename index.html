@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MENING MAGAZINIM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- ========== 1. KIRISH OYNASI ========== -->
+  <section id="auth" class="auth" hidden>
+    <div class="auth-brand">
+      <h1>MENING<br>MAGAZINIM</h1>
+      <p>Mahsulot, narx va savdo hisobi — bitta oynada.</p>
+    </div>
+
+    <div class="auth-box">
+      <!-- Telefon + parol -->
+      <form id="loginForm" class="auth-step" novalidate>
+        <h2>Kirish</h2>
+
+        <label class="field">
+          <span>Telefon raqami</span>
+          <div class="phone-field">
+            <span class="prefix">+998</span>
+            <input id="phone" type="tel" inputmode="numeric" maxlength="12"
+                   placeholder="90 123 45 67" autocomplete="tel-national" required>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>Parol</span>
+          <input id="password" type="password" placeholder="Parolni kiriting"
+                 autocomplete="current-password" required>
+        </label>
+
+        <p class="hint">Bu raqam birinchi marta kirayotgan bo‘lsa, kiritilgan parol shu raqam uchun saqlanadi.</p>
+        <p id="loginError" class="error" role="alert"></p>
+        <button class="btn primary big" type="submit">Kirish</button>
+      </form>
+
+      <!-- SMS tasdiqlash -->
+      <form id="smsForm" class="auth-step" hidden novalidate>
+        <h2>SMS orqali tasdiqlash</h2>
+        <p id="smsInfo" class="hint"></p>
+        <div id="codeRow" class="code-row" aria-label="6 xonali kod"></div>
+        <p id="demoCode" class="demo-code"></p>
+        <p id="smsError" class="error" role="alert"></p>
+        <button class="btn primary big" type="submit">Tasdiqlash</button>
+        <div class="sms-links">
+          <button type="button" id="resendBtn" class="link">Kodni qayta yuborish</button>
+          <button type="button" id="backBtn" class="link">Raqamni o‘zgartirish</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ========== 2. ASOSIY SAHIFA ========== -->
+  <main id="app" class="app" hidden>
+
+    <!-- Chap yuqori: umumiy pul -->
+    <header class="topbar">
+      <div class="money">
+        <span class="money-label">UMUMIY PUL:</span>
+        <strong id="moneyValue" class="money-value">0 so'm</strong>
+        <div class="money-meta">
+          <span>Boshlang‘ich: <b id="startMoneyText">0 so'm</b></span>
+          <span>Sotuvdan: <b id="salesMoneyText">0 so'm</b></span>
+          <button id="editMoney" class="link light" type="button">Boshlang‘ich pulni o‘zgartirish</button>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <span id="userPhone" class="user-phone"></span>
+        <button id="logoutBtn" class="btn ghost" type="button">Chiqish</button>
+      </div>
+    </header>
+
+    <!-- Markaz: qidiruv -->
+    <section class="search-zone" aria-labelledby="searchTitle">
+      <h2 id="searchTitle" class="visually-hidden">Mahsulotni qidirish</h2>
+      <label class="search-bar">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="searchInput" type="search" placeholder="Mahsulot nomini yozing…" autocomplete="off">
+      </label>
+      <div id="searchResults" class="results" aria-live="polite"></div>
+    </section>
+
+    <!-- Pastki qism -->
+    <div class="bottom">
+
+      <!-- Pastki chap: Hamma narsa -->
+      <section class="panel all-panel" aria-labelledby="allTitle">
+        <div class="panel-head">
+          <h2 id="allTitle">Hamma narsa</h2>
+          <button id="resetAll" class="link danger" type="button">Hamma ma’lumotni tozalash</button>
+        </div>
+
+        <div id="stats" class="stats"></div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab is-active" role="tab" data-tab="stock" type="button"></button>
+          <button class="tab" role="tab" data-tab="sold" type="button"></button>
+          <button class="tab" role="tab" data-tab="gone" type="button"></button>
+        </div>
+
+        <div id="tabList" class="list"></div>
+      </section>
+
+      <!-- Pastki o‘ng: Mahsulot qo‘shish -->
+      <section class="panel add-panel" aria-labelledby="addTitle">
+        <h2 id="addTitle">Mahsulot qo‘shish</h2>
+
+        <form id="addForm" class="add-form" novalidate>
+          <label class="field">
+            <span>Mahsulot nomi</span>
+            <input id="pName" type="text" placeholder="Masalan: Sut 1 L" maxlength="80" required>
+          </label>
+
+          <div class="field">
+            <span>Mahsulot rasmi</span>
+            <div class="image-pick">
+              <img id="imgPreview" class="img-preview" alt="" hidden>
+              <label class="btn ghost file-btn">
+                Rasm tanlash
+                <input id="pImage" type="file" accept="image/*" hidden>
+              </label>
+              <button id="imgClear" class="link" type="button" hidden>Rasmni olib tashlash</button>
+            </div>
+          </div>
+
+          <div class="two">
+            <label class="field">
+              <span>Sotuv narxi (so'm)</span>
+              <input id="pPrice" type="number" min="0" step="any" inputmode="decimal" placeholder="14000" required>
+            </label>
+            <label class="field">
+              <span>Asosiy narxi (so'm)</span>
+              <input id="pCost" type="number" min="0" step="any" inputmode="decimal" placeholder="10500" required>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Mahsulot soni</span>
+            <input id="pQty" type="number" min="1" step="1" inputmode="numeric" placeholder="10" required>
+          </label>
+
+          <p id="profitPreview" class="profit-preview"></p>
+          <p id="addError" class="error" role="alert"></p>
+          <button class="btn primary big" type="submit">Qo‘shish</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="./meningmagazinm.js"></script>
+</body>
+</html>
